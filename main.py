@@ -1,10 +1,11 @@
-import tweepy
 import json
+import logging
+import sys
+
+import tweepy
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-import logging
-import sys
 
 Accesstoken = '978447119169105920-iS2pxiVlnlzAqmyCzXxIyixgdThO90S'
 AccesstokenSec = 'LqqXDAf0ZDamKfC2EwoHeUBSVCJmUHcEH7Rb6NSLrodmu'
@@ -13,14 +14,14 @@ ConsumerSec = 'HvATuMNObaazzNUDfUbKVU0flsASXCkDVEQyFDPadcoGtauuk1'
 
 logger = logging.getLogger(__name__)
 
-auth = OAuthHandler(ConsumerKey,ConsumerSec)
-auth.set_access_token(Accesstoken,AccesstokenSec)
+auth = OAuthHandler(ConsumerKey, ConsumerSec)
+auth.set_access_token(Accesstoken, AccesstokenSec)
 
 api = tweepy.API(auth)
 
 
-def Readlocation (location_name):
-    f = open("Locations.txt","r")
+def Readlocation(location_name):
+    f = open("Locations.txt", "r")
     lines = f.readlines()
     for line in lines:
         l = line.split(":")
@@ -40,9 +41,9 @@ class MyListener(StreamListener):
                 text = json.loads(data)
                 try:
                     fs = open('pythonID.json', 'a')
-                    dictObj = {'user':text['user']}
+                    dictObj = {'user': text['user']}
                     jsObj = json.dumps(dictObj)
-                    fs.write(jsObj+'\n')
+                    fs.write(jsObj + '\n')
                     print(jsObj)
                 except BaseException as e:
                     print("error on write")

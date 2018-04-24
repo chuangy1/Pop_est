@@ -8,8 +8,9 @@ def logp(log_info):
     print('[' + time.strftime("%Y-%m-%d %H:%M:%S") + '] ' + log_info)
 
 
-accounts = []  # for fetching status
-# chuangy
+# accounts for tweet api
+accounts = []
+
 accounts.append({
     'consumer_key': '4eEm0v4afh2MH9juRASmR3xd0',
     'consumer_secret': 'ek5x4au3LBo25iBcwKf9lzJMViz1KCoYApbPIYstHZgWJHHFHY',
@@ -22,7 +23,12 @@ accounts.append({
     'access_token': '853442542074908672-7t6ztvCOsHqClazlbxFKe2p1YTFIfAB',
     'access_secret': '50FpJK7S5Cdabmm6kQr0ikWWe3FY83y3sRZrB8tX265XO'})
 
-# arthur
+accounts.append({
+    'consumer_key': 'NhmAGuRvOhen2EXoReEvFPhn9',
+    'consumer_secret': 'q2ZrUQrdInVAHKr2ClVBqv3RfCIB2jO4A2HLm5QifwYmIcoXEu',
+    'access_token': '853442542074908672-nAf6QrTJjHasdmXqtghe7FoIz54dRCk',
+    'access_secret': 'DGckFXikMtxjmGM16pGCp2pgXGvz7O6hDw0Fe7fRzglXA'})
+
 accounts.append({
     'consumer_key': '7NW9RyZLWnXE7jbbgC7Q5ErJw',
     'consumer_secret': 'Vmkp7ZrAVTVob0Cxr2lGMFokjNKvKLTWQtrVbWmf8FaP9E48Jx',
@@ -32,11 +38,22 @@ logp('Accounts added')
 
 # add accounts to apis
 apis = []
-for account in accounts:
-    auth = OAuthHandler(account['consumer_key'], account['consumer_secret'])
-    auth.set_access_token(account['access_token'], account['access_secret'])
-    apis.append(tweepy.API(auth))
+account = accounts[0]
+auth = OAuthHandler(account['consumer_key'], account['consumer_secret'])
+auth.set_access_token(account['access_token'], account['access_secret'])
+apis.append(tweepy.API(auth))
 
-tweets = apis[0].home_timeline()
-for tweet in tweets:
-    print(tweet.text)
+
+class MyStreamListener(tweepy.StreamListener):
+
+    def on_status(self, status):
+        print(status)
+
+    def on_error(self, status):
+        print(status)
+        return False
+
+
+myStreamListener = MyStreamListener()
+myStream = tweepy.Stream(apis[0].auth, myStreamListener)
+myStream.filter(locations=[144.9027, -37.8507, 144.9914, -37.7754], languages=["en"])
