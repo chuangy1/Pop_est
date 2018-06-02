@@ -1,8 +1,0 @@
-ssh -i cloud.key ubuntu@115.146.95.84
-ssh -i cloud.key ubuntu@115.146.95.72
-ssh -i cloud.key ubuntu@115.146.95.85
-ssh -i cloud.key ubuntu@115.146.93.129
-ssh -i cloud.key ubuntu@115.146.95.33
-ssh -i cloud.key ubuntu@115.146.94.205
-ssh -i cloud.key ubuntu@115.146.95.47
-
